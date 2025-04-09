@@ -9,6 +9,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Company, CompanyDto>();
+        CreateMap<CompanyDto, Company>();
         CreateMap<CreateCompanyDto, Company>();
         CreateMap<UpdateCompanyDto, Company>();
     }

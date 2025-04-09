@@ -39,9 +39,19 @@ public class CompanyRepository : ICompanyRepository
     public async Task<Company> UpdateAsync(Company company)
     {
         company.UpdatedAt = DateTime.UtcNow;
-        _context.Entry(company).State = EntityState.Modified;
+        
+        // Get the existing entity
+        var existingCompany = await _context.Companies.FindAsync(company.Id);
+        if (existingCompany == null)
+        {
+            throw new InvalidOperationException($"Company with ID {company.Id} not found.");
+        }
+        
+        // Update properties
+        _context.Entry(existingCompany).CurrentValues.SetValues(company);
+        
         await _context.SaveChangesAsync();
-        return company;
+        return existingCompany;
     }
 
     public async Task<bool> ExistsByIsinAsync(string isin)
