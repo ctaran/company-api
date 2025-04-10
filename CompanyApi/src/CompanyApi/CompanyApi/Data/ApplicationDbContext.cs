@@ -12,7 +12,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     }
 
     public DbSet<Company> Companies { get; set; } = null!;
-    public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
