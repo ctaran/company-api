@@ -30,7 +30,8 @@ public class AuthService : IAuthService
         var result = await _userManager.CreateAsync(user, registrationDto.Password);
         if (!result.Succeeded)
         {
-            throw new InvalidOperationException("Failed to register user");
+            var errorMessages = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new InvalidOperationException($"Failed to register user: {errorMessages}");
         }
 
         var token = GenerateJwtToken(user);
