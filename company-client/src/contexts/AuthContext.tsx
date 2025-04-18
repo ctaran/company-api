@@ -13,6 +13,7 @@ const initialState: AuthState = {
 type AuthAction =
   | { type: 'LOGIN_SUCCESS'; payload: { user: any; token: string } }
   | { type: 'LOGIN_FAILURE'; payload: string }
+  | { type: 'REGISTER_SUCCESS' }
   | { type: 'LOGOUT' }
   | { type: 'CLEAR_ERROR' }
   | { type: 'SET_LOADING'; payload: boolean };
@@ -36,6 +37,12 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isAuthenticated: false,
         isLoading: false,
         error: action.payload
+      };
+    case 'REGISTER_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        error: null
       };
     case 'LOGOUT':
       return {
@@ -91,15 +98,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (credentials: RegisterCredentials) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const response = await api.post('/auth/register', credentials);
-      const { user, token } = response.data;
-      
-      localStorage.setItem('token', token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      dispatch({ type: 'LOGIN_SUCCESS', payload: { user, token } });
+      await api.post('/auth/register', credentials);
+      dispatch({ type: 'REGISTER_SUCCESS' });
+      return true;
     } catch (error: any) {
       dispatch({ type: 'LOGIN_FAILURE', payload: error.response?.data?.message || 'Registration failed' });
+      return false;
     }
   };
 

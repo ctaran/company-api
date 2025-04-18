@@ -62,7 +62,7 @@ export interface RegisterCredentials extends LoginCredentials {
 export interface AuthContextType {
   state: AuthState;
   login: (credentials: LoginCredentials) => Promise<void>;
-  register: (credentials: RegisterCredentials) => Promise<void>;
+  register: (credentials: RegisterCredentials) => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
 } 

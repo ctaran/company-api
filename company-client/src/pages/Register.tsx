@@ -52,14 +52,10 @@ const Register: React.FC = () => {
 
     if (!password) {
       errors.password = 'Password is required';
-    } else if (password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
     }
 
     if (!confirmPassword) {
       errors.confirmPassword = 'Please confirm your password';
-    } else if (password !== confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
     }
 
     setFormErrors(errors);
@@ -73,7 +69,10 @@ const Register: React.FC = () => {
       return;
     }
 
-    await register({ username, email, password, confirmPassword });
+    const success = await register({ username, email, password, confirmPassword });
+    if (success) {
+      navigate('/login', { state: { message: 'Registration successful! Please log in.' } });
+    }
   };
 
   return (
