@@ -15,6 +15,7 @@ A full-stack application for managing company information, built with .NET 8 Web
 - Swagger UI for API documentation
 - Input validation using FluentValidation
 - AutoMapper for object mapping
+- JWT authentication
 
 ## Frontend Features
 
@@ -22,12 +23,14 @@ A full-stack application for managing company information, built with .NET 8 Web
 - Company listing and management interface
 - Form validation
 - Responsive design
+- User authentication
 
 ## Prerequisites
 
 - .NET 8 SDK
 - Node.js and npm
-- Docker and Docker Compose
+- Docker Desktop (must be running)
+- Docker Compose (included with Docker Desktop)
 - PostgreSQL (if running locally without Docker)
 
 ## Getting Started
@@ -50,6 +53,8 @@ cd src/CompanyApi/CompanyApi
 dotnet run
 ```
 
+The API will automatically apply any pending database migrations when it starts.
+
 4. In a new terminal, start the React client:
 ```bash
 cd company-client
@@ -63,12 +68,18 @@ npm start
 
 ## API Endpoints
 
+### Companies
 - GET /api/companies - Get all companies
 - GET /api/companies/{id} - Get a specific company
 - GET /api/companies/isin/{isin} - Get a company by ISIN
 - POST /api/companies - Create a new company
 - PUT /api/companies/{id} - Update a company
 - DELETE /api/companies/{id} - Delete a company
+
+### Authentication
+- POST /api/auth/register - Register a new user
+- POST /api/auth/login - Login user
+- GET /api/auth/me - Get current user information
 
 ## Database Configuration
 
@@ -96,6 +107,13 @@ To run tests:
 cd company-client
 npm test
 ```
+
+## Troubleshooting
+
+### Docker Issues
+- Ensure Docker Desktop is running before executing docker-compose commands
+- If you encounter port conflicts, modify the port mappings in docker-compose.yml
+- To reset the database, run `docker-compose down -v` followed by `docker-compose up -d`
 
 ## License
 
